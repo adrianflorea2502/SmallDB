@@ -1,0 +1,88 @@
+﻿@using ProiectBD.Utils;
+@using ProiectBD.DB;
+@using Microsoft.EntityFrameworkCore;
+@{
+    List<StrangeDev> links = (List<StrangeDev>)ViewData["1338"];
+
+    ViewData["Title"] = "Dev List";
+}
+
+<html>
+<head>
+    <title>
+        List of game developers:
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #ffffff;
+            background-repeat: no-repeat;
+            background-position: top left;
+            background-attachment: fixed;
+        }
+
+        h1 {
+            font-family: Arial, sans-serif;
+            color: #000000;
+            background-color: #ffffff;
+        }
+
+        p {
+            font-family: Georgia, serif;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: normal;
+            color: #000000;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1></h1>
+    <div class="text-center">
+        <h1 class="display-4">Developers:</h1>
+        <p>
+
+            @{
+                proiectContext ctx = new proiectContext();
+                bool needToGetOut = false;
+                <hr>
+
+
+                try
+                {
+                    if (links == null)
+                    {
+                        needToGetOut = true;
+                        links = new List<StrangeDev> { new StrangeDev { } };
+                    <p style="font-family:Arial">Come back later...</p>
+                }
+                else if (!needToGetOut)
+                {
+                    foreach (StrangeDev dev in links)
+                    {
+                        <p style="font-family:Arial">
+                            Developer title: <br>
+                            @dev.name
+                        </p>
+                        <p style="font-family:Arial">
+                            Contact: <br>
+                            @dev.contact
+                        </p>
+                        <p style="font-family:Arial">
+                            Country: <br>
+                            @dev.country
+                        </p>
+
+                        <hr>
+                        <br>
+                    }
+                }
+            }
+            catch { links = new List<StrangeDev> { new StrangeDev { } }; }
+            }
+
+            </p>
+        </div>
+    </body>
+</html>

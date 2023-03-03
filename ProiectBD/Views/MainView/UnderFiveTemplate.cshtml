@@ -1,0 +1,121 @@
+﻿@using ProiectBD.Utils;
+@using ProiectBD.DB;
+@using Microsoft.EntityFrameworkCore;
+@{
+    List<StrangeGame> links = (List<StrangeGame>)ViewData["1335"];
+
+    ViewData["Title"] = "5 List";
+}
+
+<html>
+<head>
+    <title>
+        Our list of games:
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #ffffff;
+            background-repeat: no-repeat;
+            background-position: top left;
+            background-attachment: fixed;
+        }
+
+        h1 {
+            font-family: Arial, sans-serif;
+            color: #000000;
+            background-color: #ffffff;
+        }
+
+        p {
+            font-family: Georgia, serif;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: normal;
+            color: #000000;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1></h1>
+    <div class="text-center">
+        <h1 class="display-4">Games under €5:</h1>
+        <p>
+
+            @{
+                proiectContext ctx = new proiectContext();
+                bool needToGetOut = false;
+                <hr>
+
+
+                try
+                {
+                    if (links == null)
+                    {
+                        needToGetOut = true;
+                        links = new List<StrangeGame> { new StrangeGame { itemKey = -1, developer = -1, name = "Fail", price = -1, publisher = -1, rating = "badLuck", releaseDate = new DateTime(1111, 11, 1), store_page = "Nope" } };
+                    <p style="font-family:Arial">Come back later...</p>
+                }
+                else if (!needToGetOut)
+                {
+                    foreach (StrangeGame game in links)
+                    {
+                        <p style="font-family:Arial">
+                            Game title: <br>
+                            @game.name
+                        </p>
+                        <p style="font-family:Arial">
+                            Release date: <br>
+                            @game.releaseDate
+                        </p>
+                        <p style="font-family:Arial">
+                            Developer: <br>@{
+                                List<Developer> devs = ctx.Developers.FromSqlInterpolated($"exec GetDeveloperById {game.developer}").ToList();
+                                if (devs?.Count == 0)
+                                {
+                                    devs = new List<Developer> { new Developer { Contact = "someEmail@some.domain", Country = "strangeCountry", DeveloperId = 420, Name = "JohnCena Games" } };
+                                }
+                                foreach (Developer dev in devs)
+                                { @dev.Name;
+                            }
+                            }
+                        </p>
+
+                        <p style="font-family:Arial">
+                            Publisher: <br>@{
+                                List<Publisher> pubs = ctx.Publishers.FromSqlInterpolated($"exec GetPublisherById {game.publisher}").ToList();
+                                if (pubs?.Count == 0)
+                                {
+                                    pubs = new List<Publisher> { new Publisher { Contact = "publisher@publish.com", Country = "USA", PublisherId = 404, Name = "PublisherNotFound" } };
+                                }
+                                foreach (Publisher pub in pubs)
+                                { @pub.Name;
+                            }
+                            }
+                        </p>
+                        <p style="font-family:Arial">
+                            Price: <br>
+                            € @game.price.ToString("0.00")
+                        </p>
+                        <p style="font-family:Arial">
+                            Rating: <br>
+                            @game.rating
+                        </p>
+                        <p style="font-family:Arial">
+                            Store page: <br>
+                            <a href=@game.store_page>Store Page Link</a>
+                        </p>
+
+                        <hr>
+                        <br>
+                    }
+                }
+            }
+            catch { links = new List<StrangeGame> { new StrangeGame { itemKey = -1, developer = -1, name = "Fail", price = -1, publisher = -1, rating = "badLuck", releaseDate = new DateTime(1111, 11, 1), store_page = "Nope" } }; }
+            }
+
+            </p>
+        </div>
+    </body>
+</html>
